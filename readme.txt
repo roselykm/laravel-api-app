@@ -22,4 +22,20 @@ Note:
 
 5) Edit the Post migration (update schema create fields)
 
-6 run php aritsan migrate (to create the posts table)
+6) run php aritsan migrate (to create the posts table)
+
+7) create apiResource in routes\api.php
+   - Route::apiResource('posts', PostController::class);
+   - automatically create CRUD route for posts
+   - check route list: php artisan route:list
+   - GET|HEAD        api/posts .............. posts.index › PostController@index
+   - POST            api/posts .............. posts.store › PostController@store
+   - GET|HEAD        api/posts/{post} ....... posts.show › PostController@show
+   - PUT|PATCH       api/posts/{post} ....... posts.update › PostController@update
+   - DELETE          api/posts/{post} ....... posts.destroy › PostController@destroy
+
+8) edit PostController and complete all the CRUD operations
+   - app\Http\Controllers\PostController
+
+NOTE:
+   - For POST /posts in postman must set Headers to Accept : application/json
