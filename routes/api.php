@@ -18,8 +18,12 @@ Route::apiResource('posts', PostController::class);
 
 //auth routes
 Route::post('/register', [AuthController::class, 'register']);
+
+//will return token
 Route::post('/login', [AuthController::class, 'login']);
 
+//need bearer token to access
+//will delete user token once logged out
 Route::post(
     '/logout', 
     [AuthController::class, 'logout']
