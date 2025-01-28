@@ -39,3 +39,4 @@ Note:
 
 NOTE:
    - For POST /posts in postman must set Headers to Accept : application/json
+   - GET id for model: $postId = $post->getKey();
