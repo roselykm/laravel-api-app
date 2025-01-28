@@ -101,3 +101,11 @@ NOTE:
     - if error, nothing to migrate:
       php artisan migrate:reset
       php artisan migrate
+      or - php artisan migrate:fresh
+
+11) add auth middleware
+      - for sanctum auth, all api call must have header: 
+        - accept | application/json
+
+
+12) Update PostController to handle 1 to many query
