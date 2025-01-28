@@ -61,3 +61,43 @@ NOTE:
        as bearer token
      - token created when login is inserted into table personal_access_tokens,
        this token is deleted from table when logout route is called
+
+10) Add 1 to many relationship between users and posts table
+    - open Post model and add the relationship there
+
+    in model Post
+
+    //many to 1 to table user
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    in model User
+    //1 to many to table post
+    public function post() {
+        return $this->hasMany(Post::class);
+    }
+
+    edit Post migration file to add the 1 to many relationship
+
+     /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('posts', function (Blueprint $table) {
+            $table->id();
+
+            //add relationship to table user
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+
+            $table->string('title');
+            $table->text('body');
+            $table->timestamps();
+        });
+    }
+
+    run artisan migrate
+    - if error, nothing to migrate:
+      php artisan migrate:reset
+      php artisan migrate

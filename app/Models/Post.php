@@ -19,4 +19,9 @@ class Post extends Model
         'title',
         'body',
     ];
+
+    //many to 1 to table user
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }
