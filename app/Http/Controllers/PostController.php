@@ -80,6 +80,8 @@ class PostController extends Controller implements HasMiddleware
         //
         //The render method is override in file bootstrap\app.php
         // in the ->withExceptions section
+        //
+        //NotFoundHttpException cannot be catch in Controller
         $record = Post::findOrFail($post->id);
 
         //Record exist, now check if the current user own the post 
