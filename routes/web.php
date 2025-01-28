@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//disable because this app for api only
+// Route::get('/', function () {
+//     return view('welcome');
+// });
