@@ -82,6 +82,8 @@ class PostController extends Controller implements HasMiddleware
         // in the ->withExceptions section
         //
         //NotFoundHttpException cannot be catch in Controller
+        //
+        //Documentation: https://laravel.com/docs/11.x/errors#rendering-exceptions
         $record = Post::findOrFail($post->id);
 
         //Record exist, now check if the current user own the post 
