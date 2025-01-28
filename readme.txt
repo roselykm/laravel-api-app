@@ -40,3 +40,24 @@ Note:
 NOTE:
    - For POST /posts in postman must set Headers to Accept : application/json
    - GET id for model: $postId = $post->getKey();
+
+9) Creating AuthController (for sanctum to generate bearer token)
+   - php artisan make:controller AuthController
+   - create function register, login, logout
+   
+   - open api route (api.php) and add route for 3 functions above
+      //auth routes
+      Route::post('/register', [AuthController::class, 'register']);
+      Route::post('/login', [AuthController::class, 'login']);
+      Route::post('/logout', [AuthController::class, 'logout']);
+   
+   - update model user to for token generation
+      use Laravel\Sanctum\HasApiTokens;
+      use HasFactory, Notifiable, HasApiTokens;
+
+   - for logout, the route must be protected 
+     ->middleware('auth:sanctum')
+     - when calling logout route, token from login must be put in header
+       as bearer token
+     - token created when login is inserted into table personal_access_tokens,
+       this token is deleted from table when logout route is called
