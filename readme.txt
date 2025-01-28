@@ -109,3 +109,6 @@ NOTE:
 
 
 12) Update PostController to handle 1 to many query
+
+13 Update bootstrap\app.php to handle record not found exception
+   by overriding the render method in ->withExceptions section
