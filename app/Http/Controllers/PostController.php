@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
-
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Exception;
 
 //Eloquent ORM: CRUD operations
 class PostController extends Controller implements HasMiddleware
@@ -29,7 +31,14 @@ class PostController extends Controller implements HasMiddleware
         // GET /api/posts
 
         //return only posts for the current user
-        return Post::where('user_id', $request->user()->id)->get();
+        //return Post::where('user_id', $request->user()->id)->get();
+
+        //return only posts for the current user
+        $post = DB::table('posts')
+                ->where('user_id', '=', $request->user()->id)
+                ->get();
+
+        return $post;
     }
 
     /**
@@ -60,12 +69,38 @@ class PostController extends Controller implements HasMiddleware
         // GET /api/posts/id        
 
         //Show only post own by the current user
-        $post = DB::table('posts')
-                ->where('id', '=', $post->id)
-                ->where('user_id', '=', $request->user()->id)
-                ->get();
+
+        //First check if the post exist or not using findOrFail function
+        //
+        //If not exist exception: Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+        // will be thrown
+        //
+        //The exception will be handled by overriding the render method
+        // rendering behavior of Laravel/Symphony
+        //
+        //The render method is override in file bootstrap\app.php
+        // in the ->withExceptions section
+        $record = Post::findOrFail($post->id);
+
+        //Record exist, now check if the current user own the post 
+        $post1 = DB::table('posts')
+                    ->where('id', '=', $post->id)
+                    ->where('user_id', '=', $request->user()->id)
+                    ->get();
+
+        //Current user not own the post
+        if (!$post1->isNotEmpty()) {
+            return [
+                "status" => false,
+                "message" => "Post exist, but you dont own the post!"
+            ];
+        }
         
-        return $post;
+        //Current user own the post
+        return [
+            "status" => true,
+            "post" => $post
+        ];
     }
 
     /**
